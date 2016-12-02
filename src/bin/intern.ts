@@ -127,7 +127,7 @@ program
 	})
 	.on('help', function (args: any[]) {
 		let commandName = args[0];
-		let command: any; // TODO: fix type?
+		let command: any;
 		const commands: any[] = (<any> program).commands;
 
 		for (let i = 0; i < commands.length; i++) {

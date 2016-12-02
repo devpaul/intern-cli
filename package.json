@@ -27,7 +27,7 @@
     "intern": "./_build/src/bin/intern.js"
   },
   "scripts": {
-	"build": "tsc",
+    "build": "tsc",
     "test": "node node_modules/intern/client.js config=_build/tests/intern"
   },
   "engines": {
