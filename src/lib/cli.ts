@@ -105,8 +105,8 @@ export function _setDieMethod(method: (...args: any[]) => void) {
  */
 export function getLogger(verbose?: boolean): Function {
 	if (verbose) {
-		return function () {
-			process.stderr.write('>> ' + util.format.apply(util, arguments) + '\n');
+		return function (...args: any[]) {
+			process.stderr.write('>> ' + util.format.apply(util, args) + '\n');
 		};
 	}
 	return function () {};
@@ -167,6 +167,5 @@ function getFormatter(width: number, prefix?: string): (...args: any[]) => strin
 let format = function (...args: any[]) {
 	const formatter = getFormatter(80, '  ');
 	format = formatter;
-	return formatter.apply(null, args);
+	return formatter(...args);
 };
-

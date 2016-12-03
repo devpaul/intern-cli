@@ -3,11 +3,13 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import * as cli from '../lib/cli';
-import program = require('commander'); // importing like this so helpInformation can be modified below
+import { Command } from 'commander';
 import * as resolve from 'resolve';
 import { spawn } from 'child_process';
 import opn = require('opn');
 const pkg = require('../../../package.json');
+
+const program = new Command();
 
 let vlog = cli.getLogger();
 const print = cli.print;
@@ -82,17 +84,17 @@ program.helpInformation = function(this: any) {
 
 	let cmdName = this._name;
 	if (this._alias) {
-		cmdName = cmdName + '|' + this._alias;
+		cmdName = `${cmdName}|${this._alias}`;
 	}
 	const usage = [
 		'',
-		'  Usage: ' + cmdName + ' ' + this.usage()
+		`  Usage: ${cmdName} ${this.usage()}`
 	];
 
-	let cmds: string[] = [];
+	const cmds: string[] = [];
 	const commandHelp = this.commandHelp();
 	if (commandHelp) {
-		cmds = [commandHelp];
+		cmds.push(commandHelp);
 	}
 
 	const options = [
@@ -126,7 +128,7 @@ program
 		vlog = cli.getLogger(true);
 	})
 	.on('help', function (args: any[]) {
-		let commandName = args[0];
+		const commandName = args[0];
 		let command: any;
 		const commands: any[] = (<any> program).commands;
 
@@ -264,10 +266,10 @@ program
 	.option('--proxyOnly', 'start Intern\'s test server, but don\'t run any tests')
 	.option('--timeout <int>', 'set the default timeout for async tests', cli.intArg)
 	.option('--tunnel <name>', 'use the given tunnel for WebDriver tests')
-	.action(function () {
+	.action(function (...args: any[]) {
 		// jshint maxcomplexity:12
 
-		const options = arguments[arguments.length - 1];
+		const options = args[args.length - 1];
 		const config = options.config || path.join(TESTS_DIR, 'intern.js');
 
 		try {
@@ -284,7 +286,7 @@ program
 		const internCmd = path.join(internDir, mode);
 
 		// Allow user-specified args in the standard intern format to be passed through
-		const internArgs = Array.prototype.slice.call(arguments).slice(0, arguments.length - 1);
+		const internArgs = args.slice(0, args.length - 1);
 
 		internArgs.push('config=' + config);
 
@@ -417,13 +419,13 @@ program
 	.option('-o, --open', 'open the test runner URL when the server starts')
 	.option('-p, --port <port>', 'port to serve on', cli.intArg)
 	.option('-I, --noInstrument', 'disable instrumentation')
-	.action(function () {
-		const options = arguments[arguments.length - 1];
+	.action(function (...args: any[]) {
+		const options = args[args.length - 1];
 		const config = options.config || path.join(TESTS_DIR, 'intern.js');
 		const internCmd = path.join(internDir, 'runner');
 
 		// Allow user-specified args in the standard intern format to be passed through
-		const internArgs = Array.prototype.slice.call(arguments).slice(0, arguments.length - 1);
+		const internArgs = args.slice(0, args.length - 1);
 
 		internArgs.push('config=' + config);
 		internArgs.push('proxyOnly');

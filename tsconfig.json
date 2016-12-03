@@ -7,6 +7,8 @@
 		"moduleResolution": "node",
 		"noImplicitAny": true,
 		"noImplicitThis": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
 		"outDir": "./_build",
 		"preserveConstEnums": true,
 		"removeComments": true,

@@ -7,13 +7,13 @@ import * as path from 'path';
 registerSuite({
 	name: 'lib/cli',
 
-	acceptVersion: function () {
+	acceptVersion() {
 		assert.isTrue(cli.acceptVersion('3.3.0-pre', '3.0.0'));
 		assert.isTrue(cli.acceptVersion('3.3.2', '3.0.0'));
 		assert.isFalse(cli.acceptVersion('2.3.2', '3.0.0'));
 	},
 
-	collect: function () {
+	collect() {
 		const input: string[] = [];
 		cli.collect('5', input);
 		assert.deepEqual(input, [ '5' ]);
@@ -38,27 +38,27 @@ registerSuite({
 		let tempdir: string;
 
 		return {
-			setup: function () {
+			setup() {
 				fs.mkdirSync('.testtmp');
 				tempdir = '.testtmp';
 			},
 
-			afterEach: function () {
+			afterEach() {
 				fs.readdirSync(tempdir).forEach(function (filename: string) {
 					rm(path.join(tempdir, filename));
 				});
 			},
 
-			teardown: function () {
+			teardown() {
 				rm(tempdir);
 			},
 
-			'copy file': function () {
+			'copy file'() {
 				cli.copy('./tests/unit/all.ts', path.join(tempdir, 'all.js'));
 				assert.isTrue(fs.statSync(path.join(tempdir, 'all.js')).isFile());
 			},
 
-			'copy dir': function () {
+			'copy dir'() {
 				cli.copy('./tests', tempdir);
 				assert.isTrue(fs.statSync(path.join(tempdir, 'unit', 'all.ts')).isFile());
 			}
@@ -70,26 +70,26 @@ registerSuite({
 		let message: string;
 
 		return {
-			setup: function () {
+			setup() {
 				cli._setDieMethod(function (msg: string) {
 					message = msg;
 				});
 			},
 
-			beforeEach: function () {
+			beforeEach() {
 				message = null;
 			},
 
-			teardown: function () {
+			teardown() {
 				cli._setDieMethod(oldDie);
 			},
 
-			good: function () {
+			good() {
 				assert.strictEqual(cli.enumArg([ 'a', 'b' ], 'a'), 'a');
 				assert.isNull(message);
 			},
 
-			bad: function () {
+			bad() {
 				cli.enumArg([ 'a', 'b' ], 'c');
 				assert.isNotNull(message);
 			}
