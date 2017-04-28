@@ -1,0 +1,13 @@
+lcov.info
+html-report
+browser_modules
+node_modules
+saucelabs
+testingbot
+browserstack
+coverage-final.json
+_build/
+_tests/
+src/**/*.js
+benchmark.json
+baselines.json
